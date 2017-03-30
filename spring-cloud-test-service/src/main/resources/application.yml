@@ -1,0 +1,9 @@
+server:
+  port: 0
+spring:
+  application:
+    name: spring-cloud-test-service
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9001/eureka/
