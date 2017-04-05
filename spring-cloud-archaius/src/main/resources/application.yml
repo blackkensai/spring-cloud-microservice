@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: configserver
+  cloud:
+    config:
+      server:
+        svn:
+          uri: http://run-svn/projects/cn/E-Commerce/branch/FRAMEWORK/microservice-sample-config
+  profiles:
+    active:
+      - subversion
+server:
+  port: 8888
