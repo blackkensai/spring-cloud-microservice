@@ -3,4 +3,4 @@ spring:
     config:
       uri: http://localhost:8888
   application:
-    name: spring-cloud-eureka
+    name: spring-cloud-order-service

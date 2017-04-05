@@ -8,6 +8,9 @@ spring:
           uri: http://run-svn/projects/cn/E-Commerce/branch/FRAMEWORK/microservice-sample-config
   profiles:
     active:
-      - subversion
+    - subversion
 server:
   port: 8888
+management:
+  security:
+    enabled: false
