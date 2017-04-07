@@ -2,5 +2,6 @@ spring:
   cloud:
     config:
       uri: http://spring.cloud.config.server:8888
+      fail-fast: true
   application:
     name: spring-cloud-order-service
