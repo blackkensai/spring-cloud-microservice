@@ -8,6 +8,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.foo.domain.CouponList;
 import com.foo.domain.IOrder;
+import com.netflix.config.DynamicPropertyFactory;
+import com.netflix.config.DynamicStringProperty;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
@@ -31,5 +33,12 @@ public class FrontendSampleController {
 
 	public CouponList getCouponListByUserFallback(String userId) {
 		return new CouponList();
+	}
+
+	DynamicStringProperty property = DynamicPropertyFactory.getInstance().getStringProperty("business.id1", "ERROR");
+
+	@RequestMapping("/test1")
+	public String test1() {
+		return String.format(">>> %s", property.get());
 	}
 }
