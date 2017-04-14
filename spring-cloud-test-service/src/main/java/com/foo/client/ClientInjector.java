@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class ClientInjector implements SmartLifecycle {
 	private boolean started = false;
+	private boolean injected = false;
 	@Autowired
 	private HttpRequestStoreInterceptor httpRequestStoreInterceptor;
 	@Autowired
@@ -22,14 +23,16 @@ public class ClientInjector implements SmartLifecycle {
 	@Autowired
 	private MetricStore metricStore;
 
-	Object injectRestTemplate() {
+	private void injectRestTemplate() {
+		if (injected) {
+			return;
+		}
 		for (ClientHttpRequestInterceptor interceptor : restTemplate.getInterceptors()) {
 			if (interceptor instanceof LoadBalancerInterceptor) {
 				inject((LoadBalancerInterceptor) interceptor);
 			}
 		}
 		restTemplate.getInterceptors().add(0, httpRequestStoreInterceptor);
-		return new Object();
 	}
 
 	private void inject(LoadBalancerInterceptor loadBalancerInterceptor) {
@@ -44,6 +47,8 @@ public class ClientInjector implements SmartLifecycle {
 			WrappedLoadBalancerClient wrappedLoadBalancerClient = new WrappedLoadBalancerClient(springClientFactory, metricStore);
 
 			field.set(loadBalancerInterceptor, wrappedLoadBalancerClient);
+
+			injected = true;
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
